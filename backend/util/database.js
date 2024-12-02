@@ -20,7 +20,7 @@
 const { Sequelize } = require('sequelize');
 
 // Thiết lập kết nối với MySQL
-const sequelize = new Sequelize('node-complete', 'root', 'nodecomplete', {
+const sequelize = new Sequelize('node-complete', 'root', '123456', {
   dialect: 'mysql', // CSDL sử dụng
   host: 'localhost', // Địa chỉ server
 });
