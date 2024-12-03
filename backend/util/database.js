@@ -16,19 +16,18 @@
 
 // module.exports = promisePool;
 
-
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require("sequelize");
 
 // Thiết lập kết nối với MySQL
-const sequelize = new Sequelize('node-complete', 'root', '123456', {
-  dialect: 'mysql', // CSDL sử dụng
-  host: 'localhost', // Địa chỉ server
+const sequelize = new Sequelize("products", "root", "123456", {
+  dialect: "mysql", // CSDL sử dụng
+  host: "localhost", // Địa chỉ server
 });
 
 // Kiểm tra kết nối
 sequelize
   .authenticate()
-  .then(() => console.log('Database connected successfully'))
-  .catch((err) => console.error('Error connecting to the database:', err));
+  .then(() => console.log("Database connected successfully"))
+  .catch((err) => console.error("Error connecting to the database:", err));
 
 module.exports = sequelize;

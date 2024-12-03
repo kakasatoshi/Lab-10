@@ -79,7 +79,7 @@
 // };
 
 const { DataTypes } = require("sequelize");
-const sequelize = require("../utils/database");
+const sequelize = require("../util/database");
 
 // Định nghĩa Model Product
 const Product = sequelize.define("product", {
