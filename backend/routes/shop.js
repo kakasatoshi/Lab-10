@@ -6,20 +6,22 @@ const shopController = require("../controllers/shopController");
 
 const router = express.Router();
 
-router.get("/", shopController.getIndex);
+router.get("/", shopController.getAllProducts);
 
-router.get("/products", shopController.getProducts);
+router.get("/products", shopController.getAllProducts);
 
-router.get("/products/:productId", shopController.getProduct);
+router.post("/products", shopController.createProduct); // Tạo sản phẩm// Lấy danh sách sản phẩm
+router.get("/products/:id", shopController.getProductById); // Lấy sản phẩm theo ID
+router.delete("/products/:id", shopController.deleteProductById); // Xóa sản phẩm theo ID
 
-router.get("/cart", shopController.getCart);
+// router.get("/cart", shopController.getCart);
 
-router.post("/postCart", shopController.postCart);
+// router.post("/postCart", shopController.postCart);
 
-router.post("/delete", shopController.postCartDeleteProduct);
+// router.post("/delete", shopController.postCartDeleteProduct);
 
-router.get("/orders", shopController.getOrders);
+// router.get("/orders", shopController.getOrders);
 
-router.get("/checkout", shopController.getCheckout);
+// router.get("/checkout", shopController.getCheckout);
 
 module.exports = router;

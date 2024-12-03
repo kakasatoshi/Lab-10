@@ -1,110 +1,61 @@
-// const fs = require("fs");
-// const path = require("path");
-
-// const Cart = require("./cart");
-
-// const p = path.join(
-//   path.dirname(process.mainModule.filename),
-//   "data",
-//   "products.json"
-// );
-
-// const db = require("../util/database");
-// const getProductsFromFile = (cb) => {
-//   fs.readFile(p, (err, fileContent) => {
-//     if (err) {
-//       cb([]);
-//     } else {
-//       cb(JSON.parse(fileContent));
-//     }
-//   });
-// };
-
-// module.exports = class Product {
-//   constructor(id, title, imageUrl, description, price) {
-//     this.id = id;
-//     this.title = title;
-//     this.imageUrl = imageUrl;
-//     this.description = description;
-//     this.price = price;
-//   }
-
-//   save() {
-//     getProductsFromFile((products) => {
-//       if (this.id) {
-//         const existingProductIndex = products.findIndex(
-//           (prod) => prod.id === this.id
-//         );
-//         const updatedProducts = [...products];
-//         updatedProducts[existingProductIndex] = this;
-//         fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
-//           console.log(err);
-//         });
-//       } else {
-//         this.id = Math.random().toString();
-//         products.push(this);
-//         fs.writeFile(p, JSON.stringify(products), (err) => {
-//           console.log(err);
-//         });
-//       }
-//     });
-//   }
-
-//   static deleteById(id) {
-//     getProductsFromFile((products) => {
-//       const product = products.find((prod) => prod.id === id);
-//       const updatedProducts = products.filter((prod) => prod.id !== id);
-//       fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
-//         if (!err) {
-//           Cart.deleteProduct(id, product.price);
-//         }
-//       });
-//     });
-//   }
-
-//   static fetchAll(cb) {
-//     // getProductsFromFile(cb);
-//     return db.execute("SELECT * FROM products");
-//   }
-
-//   static findById(id, cb) {
-//     // console.log("id: " + id);
-//     // getProductsFromFile((products) => {
-//     //   const product = products.find((p) => p.id === id);
-//     //   console.log(product);
-//     //   cb(product);
-//     // });
-//     return db.execute("SELECT * FROM products WHERE products.id = ?", [id]);
-//   }
-// };
-
 const { DataTypes } = require("sequelize");
 const sequelize = require("../util/database");
 
-// Định nghĩa Model Product
-const Product = sequelize.define("product", {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
+const Product = sequelize.define(
+  "product",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
   },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  imageUrl: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  price: {
-    type: DataTypes.FLOAT,
-    allowNull: false,
-  },
-});
+  {
+    timestamps: false, // Tắt tự động thêm createdAt và updatedAt
+  }
+);
+
+/** Thêm Phương Thức */
+
+Product.createProduct = async (productData) => {
+  return await Product.create(productData);
+};
+
+Product.findById = async (id) => {
+  return await Product.findOne({ where: { id } });
+};
+
+Product.updateById = async (id, updateData) => {
+  const product = await Product.findById(id);
+  if (product) {
+    return await product.update(updateData);
+  }
+  throw new Error("Product not found");
+};
+
+Product.deleteById = async (id) => {
+  const product = await Product.findById(id);
+  if (product) {
+    return await product.destroy();
+  }
+  throw new Error("Product not found");
+};
 
 module.exports = Product;

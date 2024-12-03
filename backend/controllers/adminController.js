@@ -14,7 +14,7 @@
 //   console.log(products);
 // });
 
-const Product = require("../models/product");
+const Product = require("../Models/Product");
 
 exports.getAddProduct = (req, res, next) => {
   res.json({
@@ -25,6 +25,20 @@ exports.getAddProduct = (req, res, next) => {
   });
 };
 
+exports.createProduct = async (req, res) => {
+  try {
+    const { title, imageUrl, description, price } = req.body;
+    const product = await Product.create({
+      title,
+      imageUrl,
+      description,
+      price,
+    });
+    res.status(201).json({ message: "Product created successfully", product });
+  } catch (error) {
+    res.status(500).json({ message: "Error creating product", error });
+  }
+};
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
@@ -79,11 +93,11 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
-    res.json( {
+    res.json({
       message: "Products page",
       path: "/admin/products",
       prods: products,
-      });
+    });
   });
 };
 
