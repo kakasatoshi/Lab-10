@@ -116,7 +116,7 @@
 // };
 
 /////////////////////////////
-const Product = require("../models/product");
+const Product = require("../Models/Product");
 const Cart = require("../models/cart");
 
 // Lấy danh sách sản phẩm
@@ -169,7 +169,7 @@ exports.getIndex = (req, res, next) => {
 // Lấy sản phẩm từ giỏ hàng
 exports.getCart = (req, res, next) => {
   Cart.getCart((cart) => {
-    Product.fetchAll()
+    Product.findAll()
       .then(([products]) => {
         const cartProducts = [];
         for (let product of products) {
