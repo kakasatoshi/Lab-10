@@ -43,11 +43,11 @@ Product.findById = async (id) => {
 };
 
 Product.updateById = async (id, updateData) => {
-  const product = await Product.findById(id);
-  if (product) {
-    return await product.update(updateData);
+  const [affectedRows] = await Product.update(updateData, { where: { id } });
+  if (affectedRows === 0) {
+    throw new Error("Product not found");
   }
-  throw new Error("Product not found");
+  return await Product.findOne({ where: { id } }); // Trả lại bản ghi đã cập nhật
 };
 
 Product.deleteById = async (id) => {

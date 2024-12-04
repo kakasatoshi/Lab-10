@@ -20,20 +20,18 @@ function EditProduct() {
     e.preventDefault();
 
     const url = editing
-      ? `http://localhost:5000/admin/edit-product`
+      ? `http://localhost:5000/admin/edit-product/${productId}`
       : "http://localhost:5000/admin/add-product";
     const payload = {
-      productId: editing ? product.id : null,
       title: title,
       imageUrl: imageUrl,
-      price: price,
+      price: parseFloat(price),
       description: description,
-      productId: editing ? productId : undefined,
     };
 
     try {
       const response = await fetch(url, {
-        method: "POST",
+        method: editing ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
