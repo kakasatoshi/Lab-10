@@ -12,9 +12,28 @@ const {
 } = require("./Models/associations.js");
 
 sequelize
-  .sync({ alter: true }) // Sử dụng .sync({ force: true }) để xóa và tạo lại bảng
-  .then(() => console.log("Database synchronized"))
-  .catch((err) => console.error("Error synchronizing the database:", err));
+  // .sync()
+  .sync({ force: true })
+  .then((result) => {
+    return User.findById(1);
+    // console.log(result);
+  })
+  .then((user) => {
+    if (!user) {
+      return User.create({ name: "Max", email: "test@test.com" });
+    }
+    return user;
+  })
+  .then((user) => {
+    // console.log(user);
+    return user.createCart();
+  })
+  .then((cart) => {
+    app.listen(5000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const app = express();
 app.use(bodyParser.json());
