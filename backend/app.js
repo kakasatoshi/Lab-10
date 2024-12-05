@@ -2,10 +2,17 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const sequelize = require("./util/database.js");
-const Product = require("./Models/Product");
+// const Product = require("./Models/Product");
+const {
+  User,
+  CartItem,
+  Product,
+  Order,
+  OrderItem,
+} = require("./Models/associations.js");
 
 sequelize
-  .sync() // Sử dụng .sync({ force: true }) để xóa và tạo lại bảng
+  .sync({ alter: true }) // Sử dụng .sync({ force: true }) để xóa và tạo lại bảng
   .then(() => console.log("Database synchronized"))
   .catch((err) => console.error("Error synchronizing the database:", err));
 
