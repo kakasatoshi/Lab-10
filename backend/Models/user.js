@@ -13,9 +13,6 @@ const User = sequelize.define(
     },
     name: Sequelize.STRING,
     email: Sequelize.STRING,
-  },
-  {
-    timestamps: false,
   }
 );
 

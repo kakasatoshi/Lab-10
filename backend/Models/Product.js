@@ -26,9 +26,6 @@ const Product = sequelize.define(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-  },
-  {
-    timestamps: false, // Tắt tự động thêm createdAt và updatedAt
   }
 );
 

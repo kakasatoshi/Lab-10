@@ -11,9 +11,6 @@ const Order = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
-  },
-  {
-    timestamps: false, // Tắt tự động thêm createdAt và updatedAt
   }
 );
 

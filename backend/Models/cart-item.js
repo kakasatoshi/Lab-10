@@ -10,9 +10,6 @@ const CartItem = sequelize.define('cartItem', {
     primaryKey: true
   },
   quantity: Sequelize.INTEGER
-},
-{
-  timestamps: false, // Tắt tự động thêm createdAt và updatedAt
 });
 
 module.exports = CartItem;

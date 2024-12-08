@@ -1,4 +1,5 @@
-const Product = require("../models/product");
+const Product = require("../Models/product");
+const user = require("../Models/user");
 
 // Lấy danh sách sản phẩm
 exports.getProducts = async (req, res) => {

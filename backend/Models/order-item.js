@@ -12,9 +12,6 @@ const OrderItem = sequelize.define(
       primaryKey: true,
     },
     quantity: Sequelize.INTEGER,
-  },
-  {
-    timestamps: false, // Tắt tự động thêm createdAt và updatedAt
   }
 );
 
