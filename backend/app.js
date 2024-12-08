@@ -2,15 +2,39 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const sequelize = require("./util/database.js");
-const {
-  User,
-  CartItem,
-  Product,
-  Order,
-  OrderItem,
-} = require("./Models/associations.js");
+const User = require("./user");
+const CartItem = require("./cart-item");
+const Product = require("./Product");
+const Order = require("./order");
+const OrderItem = require("./order-item");
+const Cart = require("./cart");
 
 const app = express();
+
+
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
+Order.belongsTo(User);
+User.hasMany(Order);
+Order.belongsToMany(Product, { through: OrderItem });
+
+app.use(bodyParser.json());
+app.use(cors());
+app.use(async (req, res, next) => {
+  const user = await User.findByPk(1); // Lấy thông tin người dùng từ cơ sở dữ liệu
+  req.user = user; // Gắn instance của User vào req.user
+  next();
+});
+
+const apiRoutes = require("./routes/shop.js");
+const adminRoutes = require("./routes/admin.js");
+
+app.use("/admin", adminRoutes);
+app.use("/api", apiRoutes);
 
 sequelize
   .sync({ force: true }) // Ensures tables are re-created; remove `force` for production
@@ -35,12 +59,3 @@ sequelize
   .catch((err) => {
     console.error(err);
   });
-
-app.use(bodyParser.json());
-app.use(cors());
-
-const apiRoutes = require("./routes/shop.js");
-const adminRoutes = require("./routes/admin.js");
-
-app.use("/admin", adminRoutes);
-app.use("/api", apiRoutes);
