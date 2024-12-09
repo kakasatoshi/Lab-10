@@ -1,50 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../../css/forms.css";
-import { useLocation } from "react-router-dom";
+import useHttp from "../../http/useHttp";
 
 function EditProduct() {
+  const { isLoading, error, sendRequest } = useHttp();
   const location = useLocation();
+  const navigate = useNavigate();
   const { editing, product } = location.state || {};
-  // console.log(`Edit Product`, editing, product);
+
   const [title, setTitle] = useState(editing ? product.title : "");
   const [imageUrl, setImageUrl] = useState(editing ? product.imageUrl : "");
   const [price, setPrice] = useState(editing ? product.price : "");
   const [description, setDescription] = useState(
     editing ? product.description : ""
   );
-  const [productId, setProductId] = useState(editing ? product.id : "");
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const url = editing
-      ? `http://localhost:5000/admin/edit-product/${productId}`
+      ? `http://localhost:5000/admin/edit-product/${product.id}`
       : "http://localhost:5000/admin/add-product";
+
     const payload = {
-      title: title,
-      imageUrl: imageUrl,
+      title,
+      imageUrl,
       price: parseFloat(price),
-      description: description,
+      description,
+      createdAt:"",
+      updatedAt:""
+    };
+
+    const requestConfig = {
+      url,
+      method: editing ? "PUT" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: payload,
     };
 
     try {
-      const response = await fetch(url, {
-        method: editing ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
-        // Redirect to product list after successful submission.
-        // console.log("ok", response);
-        navigate("/admin/ProductList");
-      } // Redirect to product list
+      await sendRequest(requestConfig);
+      navigate("/admin/ProductList"); // Redirect to product list on success
     } catch (error) {
       console.error("Error submitting form", error);
     }
-    navigate("/admin/ProductList");
   };
 
   return (
@@ -95,12 +95,11 @@ function EditProduct() {
           />
         </div>
 
-        {editing && <input type="hidden" value={productId} name="productId" />}
-
-        <button className="btn" type="submit">
+        <button className="btn" type="submit" disabled={isLoading}>
           {editing ? "Update Product" : "Add Product"}
         </button>
       </form>
+      {error && <p className="error-text">Something went wrong: {error}</p>}
     </main>
   );
 }

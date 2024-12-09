@@ -2,17 +2,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const sequelize = require("./util/database.js");
-const User = require("./user");
-const CartItem = require("./cart-item");
-const Product = require("./Product");
-const Order = require("./order");
-const OrderItem = require("./order-item");
-const Cart = require("./cart");
+const User = require("./models/user");
+const CartItem = require("./models/cart-item");
+const Product = require("./models/Product");
+const Order = require("./models/order");
+const OrderItem = require("./models/order-item");
+const Cart = require("./models/cart");
 
 const app = express();
 
-
-Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
 User.hasMany(Product);
 User.hasOne(Cart);
 Cart.belongsTo(User);
@@ -23,7 +22,11 @@ User.hasMany(Order);
 Order.belongsToMany(Product, { through: OrderItem });
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000", // Chỉ cho phép yêu cầu từ frontend của bạn
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(async (req, res, next) => {
   const user = await User.findByPk(1); // Lấy thông tin người dùng từ cơ sở dữ liệu
   req.user = user; // Gắn instance của User vào req.user

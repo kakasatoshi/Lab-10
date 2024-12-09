@@ -15,6 +15,7 @@ exports.getProducts = async (req, res) => {
 // Thêm sản phẩm mới
 exports.postAddProduct = async (req, res) => {
   const { title, price, imageUrl, description } = req.body;
+  console.log(req.body,"req.body");
 
   try {
     const product = await req.user.createProduct({
