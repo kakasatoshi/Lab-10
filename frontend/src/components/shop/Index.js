@@ -1,19 +1,31 @@
-import React from "react";
+import React ,{useState,useEffect}from "react";
 import AddToCart from "../includes/AddToCart"; // Separate AddToCart component
 import "../../css/product.css";
-import useProducts from "../../http/useProduct";
+import useHttp from "../../http/useHttp";
 const Index = () => {
-  const { products, isLoading, error } = useProducts();
+  const { isLoading, error, sendRequest } = useHttp();
+  const [products, setProducts] = useState([]);
+  const applyData = (data) => {
+    // Xử lý dữ liệu từ API
+    setProducts(data);
+    console.log(data); // Hoặc cập nhật state hoặc render dữ liệu vào giao diện
+  };
+
+  useEffect(() => {
+    const requestConfig = {
+      url: "http://localhost:5000/api/products", // Địa chỉ API của bạn
+    };
+
+    sendRequest(requestConfig, applyData);
+  }, []); // Gọi lại sendRequest khi component mount
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
   if (error) {
-    return <p>Failed to fetch products: {error.message}</p>;
+    return <p>{error}</p>;
   }
-
-  // console.log(products);
 
   return (
     <div>

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const ProductList = () => {
   const navigate = useNavigate();
   const { products, isLoading, error } = useProducts();
+  console.log(products);
 
   if (isLoading) {
     return <p>Loading...</p>;

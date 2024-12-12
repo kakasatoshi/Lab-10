@@ -40,7 +40,7 @@ app.use("/admin", adminRoutes);
 app.use("/api", apiRoutes);
 
 sequelize
-  .sync({ force: true }) // Ensures tables are re-created; remove `force` for production
+  .sync({ alter: true }) // Ensures tables are re-created; remove `force` for production
   .then(() => {
     return User.findByPk(1); // Updated method
   })
