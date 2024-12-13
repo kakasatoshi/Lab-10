@@ -42,6 +42,7 @@ exports.getCart = async (req, res) => {
 // Thêm sản phẩm vào giỏ hàng
 exports.postCart = async (req, res) => {
   const prodId = req.body.productId;
+  console.log("postCart", prodId);
   let fetchedCart;
   let newQuantity = 1;
 
@@ -63,7 +64,8 @@ exports.postCart = async (req, res) => {
       }
     }
 
-    await fetchedCart.addProduct(product, {
+    // Chỉ truyền product.id, không truyền toàn bộ instance của product
+    await fetchedCart.addProduct(product.id, {
       through: { quantity: newQuantity },
     });
 

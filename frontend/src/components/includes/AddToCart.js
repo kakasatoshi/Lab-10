@@ -20,7 +20,7 @@ const AddToCart = (prods) => {
 
     sendRequest(requestConfig, (responseData) => {
       // Sau khi xóa thành công, cập nhật lại giỏ hàng hoặc xử lý tương tự
-      console.log("", responseData);
+      console.log("erer", responseData);
     });
   };
 

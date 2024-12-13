@@ -25,7 +25,7 @@ function EditProduct() {
       : "http://localhost:5000/admin/add-product";
 
     const payload = {
-      productId: product.id,
+      productId: editing ? product._id : "",
       title,
       imageUrl,
       price: parseFloat(price),
