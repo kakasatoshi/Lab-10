@@ -8,6 +8,7 @@ function EditProduct() {
   const location = useLocation();
   const navigate = useNavigate();
   const { editing, product } = location.state || {};
+  // console.log(product, "edit product");
 
   const [title, setTitle] = useState(editing ? product.title : "");
   const [imageUrl, setImageUrl] = useState(editing ? product.imageUrl : "");
@@ -20,21 +21,22 @@ function EditProduct() {
     e.preventDefault();
 
     const url = editing
-      ? `http://localhost:5000/admin/edit-product/${product.id}`
+      ? `http://localhost:5000/admin/edit-product`
       : "http://localhost:5000/admin/add-product";
 
     const payload = {
+      productId: product.id,
       title,
       imageUrl,
       price: parseFloat(price),
       description,
-      createdAt:"",
-      updatedAt:""
+      createdAt: "",
+      updatedAt: "",
     };
 
     const requestConfig = {
       url,
-      method: editing ? "PUT" : "POST",
+      method: editing ? "POST" : "POST",
       headers: { "Content-Type": "application/json" },
       body: payload,
     };

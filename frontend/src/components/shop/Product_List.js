@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../../css/product.css";
 import useHttp from "../../http/useHttp";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,7 @@ const ProductList = () => {
   const applyData = (data) => {
     // Xử lý dữ liệu từ API
     setProducts(data);
-    console.log(data); // Hoặc cập nhật state hoặc render dữ liệu vào giao diện
+    // console.log(data); // Hoặc cập nhật state hoặc render dữ liệu vào giao diện
   };
 
   useEffect(() => {

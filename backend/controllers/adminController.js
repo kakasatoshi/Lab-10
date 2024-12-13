@@ -53,6 +53,7 @@ exports.getProduct = async (req, res) => {
 // Cập nhật sản phẩm
 exports.postEditProduct = async (req, res) => {
   const { productId, title, price, imageUrl, description } = req.body;
+  console.log(req.body,"req.body");
 
   try {
     const product = await Product.findByPk(productId);
