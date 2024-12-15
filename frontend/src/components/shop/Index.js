@@ -1,4 +1,4 @@
-import React ,{useState,useEffect}from "react";
+import React, { useState, useEffect } from "react";
 import AddToCart from "../includes/AddToCart"; // Separate AddToCart component
 import "../../css/product.css";
 import useHttp from "../../http/useHttp";
@@ -45,7 +45,8 @@ const Index = () => {
                   <p className="product__description">{product.description}</p>
                 </div>
                 <div className="card__actions">
-                  <AddToCart product={product} />
+                  <AddToCart id={product.id} />
+                  {console.log(product, "product")}
                 </div>
               </article>
             ))}

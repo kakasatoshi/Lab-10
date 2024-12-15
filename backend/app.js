@@ -22,14 +22,19 @@ User.hasMany(Order);
 Order.belongsToMany(Product, { through: OrderItem });
 
 app.use(bodyParser.json());
-app.use(cors({
-  origin: "http://localhost:3000", // Chỉ cho phép yêu cầu từ frontend của bạn
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Chỉ cho phép yêu cầu từ frontend của bạn
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(async (req, res, next) => {
-  const user = await User.findByPk(1); // Lấy thông tin người dùng từ cơ sở dữ liệu
-  req.user = user; // Gắn instance của User vào req.user
+  const user = await User.findByPk(1);
+  if (!user) {
+    return res.status(500).json({ message: "User not found" });
+  }
+  req.user = user;
   next();
 });
 
@@ -40,7 +45,7 @@ app.use("/admin", adminRoutes);
 app.use("/api", apiRoutes);
 
 sequelize
-  .sync({ alter: true }) // Ensures tables are re-created; remove `force` for production
+  .sync({ alter: process.env.NODE_ENV !== "production" }) // Ensures tables are re-created; remove `force` for production
   .then(() => {
     return User.findByPk(1); // Updated method
   })

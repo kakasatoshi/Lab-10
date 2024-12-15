@@ -29,7 +29,8 @@ const Product = (props) => {
           <button onClick={() => console.log("Details clicked")}>
             Details
           </button>
-          <AddToCart product={props.product} />
+          <AddToCart id={id} />
+          {console.log(props.product.id, "product")}
         </div>
       </form>
     </div>

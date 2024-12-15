@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import useHttp from "../../http/useHttp";
 
-const Orders = ({ orders }) => {
-    return (
-        <>
-           
+const Orders = () => {
+  const { isLoading, error, sendRequest } = useHttp();
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const applyData = (data) => {
+      setOrders(data);
+    };
+
+    sendRequest(
+      {
+        url: "http://localhost:5000/api/orders",
+        method: "GET",
+      },
+      applyData
+    );
+  }, []);
+
+  return (
+    <>
+                 
                 <main>
                     {orders.length <= 0 ? (
                         <h1>Nothing there!</h1>
@@ -24,8 +42,8 @@ const Orders = ({ orders }) => {
                         </ul>
                     )}
                 </main>
-        </>
-    );
+    </>
+  );
 };
 
 // Example of Head, Navigation, and End components

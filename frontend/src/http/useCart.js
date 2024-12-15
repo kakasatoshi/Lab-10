@@ -49,17 +49,7 @@ const useCarts = () => {
 
   useEffect(() => {
     const applyData = (data) => {
-      const arr = data.products.map((e) => ({
-        productData: {
-          id: e.productData.id,
-          title: e.productData.title,
-          price: e.productData.price,
-          imageUrl: e.productData.imageUrl,
-          description: e.productData.description,
-        },
-        qty: e.qty,
-      }));
-      setCarts(arr);
+      setCarts(data);
     };
 
     sendRequest(

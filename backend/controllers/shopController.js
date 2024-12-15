@@ -41,13 +41,16 @@ exports.getCart = async (req, res) => {
 
 // Thêm sản phẩm vào giỏ hàng
 exports.postCart = async (req, res) => {
-  const prodId = req.body.productId;
+  const prodId = req.body.id;
   console.log("postCart", prodId);
   let fetchedCart;
   let newQuantity = 1;
 
   try {
-    const cart = await req.user.getCart();
+    const cart = await req.user.getCart(); // Lấy giỏ hàng của user hiện tại
+    if (!cart) {
+      return res.status(500).json({ message: "Cart not found" });
+    }
     fetchedCart = cart;
 
     const products = await cart.getProducts({ where: { id: prodId } });
@@ -64,7 +67,7 @@ exports.postCart = async (req, res) => {
       }
     }
 
-    // Chỉ truyền product.id, không truyền toàn bộ instance của product
+    // Thêm sản phẩm vào giỏ hàng (chuyển instance product)
     await fetchedCart.addProduct(product.id, {
       through: { quantity: newQuantity },
     });
@@ -72,7 +75,10 @@ exports.postCart = async (req, res) => {
     res.status(200).json({ message: "Product added to cart successfully" });
   } catch (error) {
     console.error("Error adding product to cart:", error);
-    res.status(500).json({ message: "Failed to add product to cart" });
+    res.status(500).json({
+      message: `Failed to add product to cart ${req.body[0].id}`,
+      error: error.message,
+    });
   }
 };
 

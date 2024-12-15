@@ -1,27 +1,34 @@
 import React, { useState } from "react";
 import useHttp from "../../http/useHttp";
 
-const AddToCart = (prods) => {
-  console.log(prods);
-  const [id, setId] = useState(prods.product.id); // Lấy productId từ props của component AddToCart
-  // const productId = productId;
+const AddToCart = ({ id }) => {
+  console.log("Product ID:", id);
+  const [productId, setProductId] = useState(id);
+  console.log("State Product ID:", productId);
   const { isLoading: loading, error: err, sendRequest } = useHttp();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission here, e.g., make an API call or use fetch()
-    const requestConfig = {
-      url: "http://localhost:5000/api/postCart",
-      method: "POST", // Hoặc "DELETE" nếu backend hỗ trợ
-      headers: { "Content-Type": "application/json" },
-      // console.log: true
-      body: { id: id }, // Truyền productId đúng format
+
+    const url = "http://localhost:5000/api/postCart";
+
+    const payload = {
+      id: productId,
     };
 
-    sendRequest(requestConfig, (responseData) => {
-      // Sau khi xóa thành công, cập nhật lại giỏ hàng hoặc xử lý tương tự
-      console.log("erer", responseData);
-    });
+    const requestConfig = {
+      url,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: payload,
+    };
+
+    try {
+      await sendRequest(requestConfig);
+      console.log("Product added to cart successfully");
+    } catch (error) {
+      console.error("Error submitting form", error);
+    }
   };
 
   return (

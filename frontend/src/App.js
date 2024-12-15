@@ -12,6 +12,7 @@ import AddProduct from "./components/admin/AddProduct";
 import ProductList from "./components/admin/ProductList";
 import EditProduct from "./components/admin/EditProduct";
 import Product_List from "./components/shop/Product_List";
+import Orders from "./components/shop/Orders";
 import Cart from "./components/shop/Cart";
 
 const router = createBrowserRouter([
@@ -47,6 +48,11 @@ const router = createBrowserRouter([
       {
         path: "/shop/cart",
         element: <Cart />,
+        // loader: authLoader,
+      },
+      {
+        path: "/orders",
+        element: <Orders />,
         // loader: authLoader,
       },
       // Thêm các route con tại đây
